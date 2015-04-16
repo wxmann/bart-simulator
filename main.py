@@ -1,5 +1,5 @@
 from functools import partial
-from lib import bartdata, montecarlo
+from sim import bartdata, montecarlo
 
 __author__ = 'tangz'
 
