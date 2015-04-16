@@ -30,30 +30,20 @@ def pittsbaypt():
     twelfthoak_station = BartStation(TWELFTH_ST_OAKLAND, 120, nineteenthoak_station)
     westoak_station = BartStation(WEST_OAKLAND, 121, twelfthoak_station)
     embarcadero_station = BartStation(EMBARACADERO, 126, westoak_station)
-    return bartline(PITTSBURG_BAY_PT, embarcadero_station)
+    return BartLine(PITTSBURG_BAY_PT, embarcadero_station)
 
 
-    # bartline = BartLineStatistics('Pittsburg/Bay Point')
-    # bartline.set_people('North Concord/Martinez', 18)
-    # bartline.set_people('Concord', 32)
-    # bartline.set_people('Pleasant Hill', 44)
-    # bartline.set_people('Walnut Creek', 62)
-    # bartline.set_people('Lafayette', 71)
-    # bartline.set_people('Orinda', 79)
-    # bartline.set_people('Rockridge', 84)
-    # bartline.set_people('MacArthur', 98)
-    # bartline.set_people('19th St./Oakland', 119)
-    # bartline.set_people('12th St./Oakland', 120)
-    # bartline.set_people('West Oakland', 121)
-    # bartline.set_people('Embarcadero', 126)
+class BartLine:
+    def __init__(self, name, first_station):
+        self.name = name
+        self.first_station = first_station
 
-def bartline(name, begin_station):
-    station = begin_station
-    stations = []
-    while station is not None:
-        stations.append(station)
-        station = station.next_station
-    return stations
+    def to_arr(self):
+        arr = []
+        station = self.first_station
+        while station is not None:
+            arr.append(station)
+            station = station.next_station
 
 
 class BartStation:
@@ -61,32 +51,3 @@ class BartStation:
         self.name = name
         self.people = people
         self.next_station = next_station
-
-# class BartLineStatistics:
-#
-#     def __init__(self, id):
-#         self.ridership = OrderedDict()
-#         self.id = id
-#
-#     def __iter__(self):
-#         return self
-#
-#     def __next__(self):
-#         if not self.ridership:
-#             raise StopIteration("No more stations left!")
-#         return self.ridership.popitem()
-#
-#     def set_people(self, station, people):
-#         self.ridership[station] = people
-#
-#     def get_people(self, station):
-#         return self.ridership[station]
-#
-#     def _total(self):
-#         return sum(self.ridership.values())
-#
-#     def probability(self, station):
-#         norm = self._total()
-#         if norm == 0:
-#             return 0
-#         return self.get_people(station) / norm

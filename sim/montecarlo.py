@@ -8,6 +8,7 @@ __author__ = 'tangz'
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+# TODO: lazy eval the avg, split into new module that can also calc stdev, etc.
 def statistics(simul):
     runs = [result.station_number for result in simul]
     return sum(runs) / len(runs)
@@ -55,16 +56,19 @@ def simulate(line_probs, packing, seats):
 # returns probability of person leaving at that station
 def exit_probabilities(line):
     probs = OrderedDict()
-    for station in line:
+    station = line.first_station
+    while True:
         nextstation = station.next_station
         if nextstation is None:
-            return probs
-        elif nextstation.next_station is None:
+            break
+        if nextstation.next_station is None:
             probs[nextstation] = 1.0
         else:
             this_station_ppl = station.people
             next_station_ppl = nextstation.people
             probs[nextstation] = (this_station_ppl - next_station_ppl) / this_station_ppl
+        station = nextstation
+    return probs
 
 
 class SimulationResult:
